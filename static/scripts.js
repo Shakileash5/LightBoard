@@ -1,7 +1,47 @@
+
+
+var socket = new WebSocket('ws://localhost:8000');
+
+function create_new_connection(host,port){
+	socket = new WebSocket('ws://'+host+':'+port);
+}
+
+function create_room(){
+	socket.send('create_room');
+	socket.close();
+	create_new_connection('localhost',8000);
+	//socket = new WebSocket('ws://localhost:8000');
+	//socket.send('join_room');
+}
+
+socket.onopen = function() {
+		console.log('Connected to server');
+		socket.send('Hello Server');
+};
+
+socket.onmessage = function(msg) {
+		console.log('Message from server: ' + msg.data);
+		if(msg.data == 'start') {
+			started = true;
+		}
+		if(msg.data == 'stop') {
+			started = false;
+		}
+		if(msg.data == 'clear') {
+			ctx.fillStyle="#fff";
+			ctx.fillRect(0,0,myCanvas.width,myCanvas.height);
+		}
+};
+
+socket.onclose = function() {
+		console.log('Disconnected from server');
+};
+
+
 window.onload = function() {
 	var myCanvas = document.getElementById("myCanvas");
 	var ctx = myCanvas.getContext("2d");
-    
+    var started = false;
     // Fill Window Width and Height
     myCanvas.width = window.innerWidth;
 	myCanvas.height = window.innerHeight;
@@ -9,15 +49,6 @@ window.onload = function() {
 	// Set Background Color
     ctx.fillStyle="#fff";
     ctx.fillRect(0,0,myCanvas.width,myCanvas.height);
-	
-	var started = false;
-	const socket = io('http://localhost:1200');
-	socket.on('connect', () => {
-      console.log("socket connected");
-    });
-
-    
-
 
 	// Touch Events Handlers
 	draw = {
@@ -49,7 +80,6 @@ window.onload = function() {
 		},
 		end: function(evt) {
 			this.started = false;
-			console.log("end");
 		}
 	};
 
@@ -83,7 +113,6 @@ window.onload = function() {
 	
 	function endDraw(evt) {
 			started = false;
-			console.log("end");
 		}
 	// Touch Events
 	myCanvas.addEventListener('mousedown', startDraw, false);
@@ -94,4 +123,5 @@ window.onload = function() {
 	document.body.addEventListener('touchmove',function(evt){
 		evt.preventDefault();
 	},false);
+	
 };

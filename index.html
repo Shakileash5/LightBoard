@@ -7,8 +7,17 @@
     <script type="text/JavaScript" src="static/scripts.js"></script>
     </head>
     <body>
-        <canvas id="myCanvas">
-            Sorry, your browser does not support HTML5 canvas technology.
-        </canvas>
+        <div>
+            <canvas id="myCanvas">
+                Sorry, your browser does not support HTML5 canvas technology.
+            </canvas>
+        </div>
+
+        <div id="controls">
+            <input type="text" id="userName" placeholder="Enter your name" />
+            <button id="joinRoom" onclick="join_room()">Join Room</button>
+            <button id="createRoom" onclick="create_room()">Create Room</button>
+        </div>
+        
     </body>
     </html>
