@@ -24,16 +24,13 @@ socket.onmessage = function(data) {
 		console.log(data.data);
 		data = JSON.parse(data.data);
 		console.log('Message from server: ',data);
-		if(data.status == 'start') {
-			started = true;
+		if(data.status == "200") {
+			if(data.type == "1") {
+				console.log("Room Created");
+				create_new_connection(data.host,data.port);
+			}
 		}
-		if(data.status == 'stop') {
-			started = false;
-		}
-		if(data.status == 'clear') {
-			ctx.fillStyle="#fff";
-			ctx.fillRect(0,0,myCanvas.width,myCanvas.height);
-		}
+		
 };
 
 socket.onclose = function() {
