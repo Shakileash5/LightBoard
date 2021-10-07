@@ -9,5 +9,85 @@ body, html {
 
 #myCanvas {
 	cursor: crosshair;
-    
+    display: none;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	
+}
+
+#controls {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 50%;
+	width: 60%;
+	padding: auto;
+	border: 1 black solid;
+	border-radius: 15px;
+	box-shadow:20px 20px 50px 15px grey;
+}
+
+.elements {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 0%;
+	width: 100%;	
+}
+
+#joinCreds {
+	display: None;
+}
+
+.button {
+	background-color: #4CAF50; /* Green */
+	border: none;
+	color: white;
+	padding: 16px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	transition-duration: 0.4s;
+	cursor: pointer;
+	
+  }
+  
+.button1 {
+	background-color: white; 
+	color: black; 
+	border: 2px solid #4CAF50;
+	border-radius: 15px;
+	width: 100px;
+	height: 40px;
+}
+  
+.button1:hover {
+	background-color: #4CAF50;
+	color: white;
+	border-radius: 15px;
+}
+  
+.button2 {
+	background-color: white; 
+	color: black; 
+	border: 2px solid #008CBA;
+	border-radius: 15px;
+	width: 100px;
+	height: 40px;
+}
+  
+.button2:hover {
+	background-color: #008CBA;
+	color: white;
+	border-radius: 15px;
 }

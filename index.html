@@ -3,24 +3,32 @@
     <title>HTML5 Canvas Drawing Board</title>
     <script type="text/JavaScript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?ver=1.4.2"></script>
     <link rel="stylesheet" href="static/styles.css" type="text/css" />
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
     <script type="text/JavaScript" src="static/scripts.js"></script>
-    </head>
-    <body>
+</head>
+<body>
         <div id="canvasDiv">
             <canvas id="myCanvas">
                 Sorry, your browser does not support HTML5 canvas technology.
             </canvas>
         </div>
-
-        <div id="controls">
-            <button id="joinRoom" onclick="join_room()">Join Room</button>
-            <button id="createRoom" onclick="create_room()">Create Room</button>
+        <div class="container">
+            <div id="controls">
+                <h2>
+                    Choose what you have to do ...
+                </h2>
+                <div id="elements">
+                    <button id="joinRoom" class="button1" onclick="join_room()">Join Room</button>
+                    
+                    <button id="createRoom" class="button2" onclick="create_room()">Create Room</button>
+                </div>
+                
+            </div>
         </div>
-        <div>
+        
+        <div id="joinCreds">
             <input type="text" id="room_id" placeholder="Enter the Room ID you need to join ...">
             <button id="joinRoom" onclick="join_room_withId()">Join Room</button>
         </div>
         
-    </body>
-    </html>
+</body>
+</html>
