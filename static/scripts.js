@@ -7,27 +7,30 @@ function create_new_connection(host,port){
 }
 
 function create_room(){
-	socket.send('create_room');
-	socket.close();
-	create_new_connection('localhost',8000);
-	//socket = new WebSocket('ws://localhost:8000');
-	//socket.send('join_room');
+	dataDict = {
+		'type': '1',
+		'action': 'create_room',
+	}
+	// send data to server to create room
+	socket.send(JSON.stringify(dataDict));
+	
 }
 
 socket.onopen = function() {
 		console.log('Connected to server');
-		socket.send('Hello Server');
 };
 
-socket.onmessage = function(msg) {
-		console.log('Message from server: ' + msg.data);
-		if(msg.data == 'start') {
+socket.onmessage = function(data) {
+		console.log(data.data);
+		data = JSON.parse(data.data);
+		console.log('Message from server: ',data);
+		if(data.status == 'start') {
 			started = true;
 		}
-		if(msg.data == 'stop') {
+		if(data.status == 'stop') {
 			started = false;
 		}
-		if(msg.data == 'clear') {
+		if(data.status == 'clear') {
 			ctx.fillStyle="#fff";
 			ctx.fillRect(0,0,myCanvas.width,myCanvas.height);
 		}
@@ -36,6 +39,7 @@ socket.onmessage = function(msg) {
 socket.onclose = function() {
 		console.log('Disconnected from server');
 };
+
 
 
 window.onload = function() {
