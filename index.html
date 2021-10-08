@@ -17,18 +17,20 @@
                     Choose what you have to do ...
                 </h2>
                 <div id="elements">
-                    <button id="joinRoom" class="button1" onclick="join_room()">Join Room</button>
+                    <button id="joinRoom" class="button1" onclick="display_joincred()">Join Room</button>
                     
                     <button id="createRoom" class="button2" onclick="create_room()">Create Room</button>
                 </div>
-                
+            </div>
+
+            <div id="joinCreds">
+                <div id="elements">
+                    <input type="text" id="room_id" placeholder="Enter the Room ID you need to join ...">
+                    <button id="joinRoom" class="button1" onclick="join_room()">Join Room</button>
+                </div>
             </div>
         </div>
         
-        <div id="joinCreds">
-            <input type="text" id="room_id" placeholder="Enter the Room ID you need to join ...">
-            <button id="joinRoom" onclick="join_room_withId()">Join Room</button>
-        </div>
         
 </body>
 </html>

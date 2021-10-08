@@ -70,15 +70,16 @@ class Server:
                     Server.rooms[roomId] = {"host":HOST_NAME,"port":freePort,"process":process}
 
             elif int(data['type']) == 2:
-                if data['roomId'] in Server.rooms:
+                print(Server.rooms)
+                if int(data['roomId']) in Server.rooms:
                     print("[+] Room available for ",websocket ,": ",data['roomId'])
                     #Server.rooms[data['roomId']].append(websocket)
                     dataDict["status"] = 200
-                    dataDict["type"] = 2
+                    dataDict["type"] = 1
                     dataDict["message"] = "Room Available"
-                    dataDict["roomId"] = data['roomId']
-                    dataDict["host"] = Server.rooms[data['roomId']]['host']
-                    dataDict["port"] = Server.rooms[data['roomId']]['port']
+                    dataDict["roomId"] = int(data['roomId'])
+                    dataDict["host"] = Server.rooms[int(data['roomId'])]['host']
+                    dataDict["port"] = Server.rooms[int(data['roomId'])]['port']
                 else:
                     print("[+] Room not available for ",websocket ,": ",data['roomId'])
                     dataDict["status"] = 400

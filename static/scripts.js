@@ -16,6 +16,26 @@ function create_room(){
 	
 }
 
+function display_joincred(){
+	document.getElementById("controls").style.display = "none";
+	document.getElementById("joinCreds").style.display = "flex";
+}
+
+function join_room(){
+	let roomId = document.getElementById("room_id").value;
+	if(roomId.length == 0){
+		console.log("Room Id is empty");
+		return;
+	}
+	dataDict = {
+		'type': '2',
+		'action': 'join_room',
+		'roomId': roomId,
+	}
+	// send data to server to join room
+	socket.send(JSON.stringify(dataDict));
+}
+
 socket.onopen = function() {
 		console.log('Connected to server');
 };
@@ -26,7 +46,7 @@ socket.onmessage = function(data) {
 		console.log('Message from server: ',data);
 		if(data.status == "200") {
 			if(data.type == "1") {
-				console.log("Room Created");
+				console.log("Room Creds recieved",data);
 				create_new_connection(data.host,data.port);
 			}
 		}
