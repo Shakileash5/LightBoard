@@ -9,6 +9,8 @@ async function create_new_connection(host,port){
 	socketRoom.addEventListener("open", onOpen);
 	socketRoom.addEventListener("message", onmessage);
 	socketRoom.addEventListener("close", onclose);
+	document.getElementById("containerDiv").style.display = "none";
+	document.getElementById("canvasDiv").style.display = "block";
 }
 
 function onOpen(){
