@@ -1,9 +1,26 @@
 
 
 var socket = new WebSocket('ws://localhost:8000');
+var socketRoom ;
 
-function create_new_connection(host,port){
-	socket = new WebSocket('ws://'+host+':'+port);
+async function create_new_connection(host,port){
+	socket.close();
+	socketRoom = await new WebSocket('ws://localhost:1201');
+	socketRoom.addEventListener("open", onOpen);
+	socketRoom.addEventListener("message", onmessage);
+	socketRoom.addEventListener("close", onclose);
+}
+
+function onOpen(){
+	console.log("Connection Opened")
+}
+
+function onmessage(data){
+	console.log(data.data);
+}
+
+function onclose(){
+	console.log("Disconnected from room");
 }
 
 function create_room(){
@@ -49,6 +66,12 @@ socket.onmessage = function(data) {
 				console.log("Room Creds recieved",data);
 				create_new_connection(data.host,data.port);
 			}
+			else if(data.type == "2") {
+				console.log("Room Joined",data);
+			}
+			else if(data.type == "-1"){
+				console.log("Unable to create or join room currently...")
+			}
 		}
 		
 };
@@ -57,7 +80,9 @@ socket.onclose = function() {
 		console.log('Disconnected from server');
 };
 
-
+function sendMsg(){
+	socketRoom.send("joinded diaudgiuagdiag")
+}
 
 window.onload = function() {
 	var myCanvas = document.getElementById("myCanvas");

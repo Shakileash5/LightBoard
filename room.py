@@ -18,9 +18,11 @@ class Room:
         Room.Clients.add(websocket)
         print("[+] Clients in the room ",Room.Clients)
         print(f"[+] {websocket} has joined the room")
-        await websocket.send(json.dumps({"status":"200","type": "message", "message": "Welcome to the chat!"}))
-        await self.send_all(f"{websocket} has joined the chat")
-    
+        await self.sendDict(websocket,json.dumps({"status":"200","type": "2", "message": "Welcome to the chat!"}))
+        await self.send_all({"status":"200","type": "4", "message": f"{websocket} has joined the chat"})
+        print("Okay its now joined")
+        return 
+
     async def unregister(self, websocket):
         Room.Clients.remove(websocket)
         print(f"{websocket} has left the chat")
@@ -28,7 +30,7 @@ class Room:
     
     async def send_all(self, message):
         for client in Room.Clients:
-            await client.send(message) 
+            await client.send(json.dumps(message)) 
     
     async def handle_message(self, websocket, message):
         await self.send_all(f"[!] {websocket} says: {message}")
@@ -51,9 +53,9 @@ class Room:
             await self.unregister(websocket)
 
 
-# create a server
+
 def main(roomId,host, port):
-    # create a server
+    # create a Room
     room_ = Room(roomId,host,port)
     start_room = websockets.serve(room_.handle_request, host, port)
     print("[+] Room Started at ",host,port)
