@@ -3,9 +3,31 @@
     <title>HTML5 Canvas Drawing Board</title>
     <script type="text/JavaScript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?ver=1.4.2"></script>
     <link rel="stylesheet" href="static/styles.css" type="text/css" />
-    <script type="text/JavaScript" src="static/scripts.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2X8-5_QlluMh7mTk9RDfnC1Wi1ZGG82Keahcww_68AB7OTT7aWbQ9ADeXZcMf4ywACo0&usqp=CAU" height="28" alt="CoolBrand">
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav">
+                    <button class="button1"> + Draw </button>
+                </div>
+                
+                <div class="navbar-nav ms-auto">
+                    <div style="background-color: grey;border: 1px green solid;border-radius: 30px;width: 30;height: 30;text-align: center;margin: 10;font-weight: bolder;">
+                        M
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
         <div id="canvasDiv">
             <canvas id="myCanvas">
                 Sorry, your browser does not support HTML5 canvas technology.
@@ -29,9 +51,11 @@
                     <button id="joinRoom" class="button1" onclick="join_room()">Join Room</button>
                 </div>
             </div>
-            <button class="button1" onclick="sendMsg()"> send something</button>
         </div>
-        
-        
+        <button class="button1" onclick="sendMsg()"> send something</button>    
 </body>
+<script type="text/JavaScript" src="static/init.js"></script>
+<script type="text/JavaScript" src="static/roomConn.js"></script>
+<script type="text/JavaScript" src="static/serverConn.js"></script>
+<script type="text/JavaScript" src="static/scripts.js"></script>
 </html>

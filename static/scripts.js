@@ -1,30 +1,4 @@
 
-
-var socket = new WebSocket('ws://localhost:8000');
-var socketRoom ;
-
-async function create_new_connection(host,port){
-	socket.close();
-	socketRoom = await new WebSocket('ws://localhost:1201');
-	socketRoom.addEventListener("open", onOpen);
-	socketRoom.addEventListener("message", onmessage);
-	socketRoom.addEventListener("close", onclose);
-	document.getElementById("containerDiv").style.display = "none";
-	document.getElementById("canvasDiv").style.display = "block";
-}
-
-function onOpen(){
-	console.log("Connection Opened")
-}
-
-function onmessage(data){
-	console.log(data.data);
-}
-
-function onclose(){
-	console.log("Disconnected from room");
-}
-
 function create_room(){
 	dataDict = {
 		'type': '1',
@@ -55,45 +29,7 @@ function join_room(){
 	socket.send(JSON.stringify(dataDict));
 }
 
-socket.onopen = function() {
-		console.log('Connected to server');
-};
-
-socket.onmessage = function(data) {
-		console.log(data.data);
-		data = JSON.parse(data.data);
-		console.log('Message from server: ',data);
-		if(data.status == "200") {
-			if(data.type == "1") {
-				console.log("Room Creds recieved",data);
-				create_new_connection(data.host,data.port);
-			}
-			else if(data.type == "2") {
-				console.log("Room Joined",data);
-			}
-			else if(data.type == "-1"){
-				console.log("Unable to create or join room currently...")
-			}
-		}
-		
-};
-
-socket.onclose = function() {
-		console.log('Disconnected from server');
-};
-
-function sendMsg(){
-	socketRoom.send("joinded diaudgiuagdiag")
-}
-
 window.onload = function() {
-	var myCanvas = document.getElementById("myCanvas");
-	var ctx = myCanvas.getContext("2d");
-    var started = false;
-    // Fill Window Width and Height
-    myCanvas.width = window.innerWidth;
-	myCanvas.height = window.innerHeight;
-
 	// Set Background Color
     ctx.fillStyle="#fff";
     ctx.fillRect(0,0,myCanvas.width,myCanvas.height);
@@ -135,10 +71,10 @@ window.onload = function() {
 			
 			ctx.beginPath();
 			ctx.moveTo(
-				evt.pageX,
-				evt.pageY
+				evt.pageX - 0,
+				evt.pageY - 0
 			);
-
+			sendMsg(evt.offsetX,evt.offsetY,"draw_start");
 			started = true;
 
 		}
@@ -148,19 +84,22 @@ window.onload = function() {
 
 			if (started) {
 				ctx.lineTo(
-					evt.pageX,
-					evt.pageY
+					evt.offsetX - 0,
+					 evt.offsetY - 0
 				);
 				
 				ctx.strokeStyle = "#000";
 				ctx.lineWidth = 5;
 				ctx.stroke();
+				console.log("Drawing",evt.pageX,evt.pageY);
+				sendMsg(evt.offsetX,evt.offsetY,"draw");
 			}
 
 		}
 	
 	function endDraw(evt) {
 			started = false;
+			sendMsg(evt.offsetX,evt.offsetY,"draw_end");
 		}
 	// Touch Events
 	myCanvas.addEventListener('mousedown', startDraw, false);

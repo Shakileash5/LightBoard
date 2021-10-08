@@ -28,10 +28,12 @@ class Room:
         print(f"{websocket} has left the chat")
         await self.send_all(f"{websocket} has left the chat")
     
-    async def send_all(self, message):
+    async def send_all(self, message,websocket=None):
         for client in Room.Clients:
-            await client.send(json.dumps(message)) 
-    
+            if client != websocket:
+                await client.send(json.dumps(message)) 
+        return 
+        
     async def handle_message(self, websocket, message):
         await self.send_all(f"[!] {websocket} says: {message}")
     
@@ -41,8 +43,10 @@ class Room:
     async def distribute(self,websocket:WebSocketServerProtocol):
         async for data in websocket:
             data = json.loads(data)
-            print("[+] Message",data)
-            await self.sendDict(websocket,data)
+            if data["type"] == "3":
+                await self.send_all(data)
+            print("[+] Message - one",data,websocket)
+            #await self.sendDict(websocket,data)
 
     async def handle_request(self, websocket, path):
         await self.register(websocket)
