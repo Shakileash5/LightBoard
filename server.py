@@ -47,12 +47,15 @@ class Server:
         await websocket.send(json.dumps(data))
 
     async def distribute(self,websocket:WebSocketServerProtocol):
+        global PORT_START
         async for data in websocket:
             data = json.loads(data)
             print("[+] Message",data)
             dataDict = {}
             if int(data['type']) == 1:
                 freePort,roomId = utils.roomCreationUtil(Server.rooms,HOST_NAME,PORT_START,PORT_END)
+                print("[+] Free Port",freePort)
+                PORT_START = freePort + 1
                 if freePort == -1:
                     dataDict["status"] = 500
                     dataDict["type"] = -1

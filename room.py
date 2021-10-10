@@ -78,7 +78,7 @@ class Room:
             elif data["type"] == "6":
                 await self.send_canvasData(websocket,data)
 
-            print("[+] Message - one",data,websocket)
+            #print("[+] Message - one",data,websocket)
             #await self.sendDict(websocket,data)
 
     async def handle_request(self, websocket, path):
