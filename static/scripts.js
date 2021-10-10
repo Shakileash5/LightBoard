@@ -1,4 +1,8 @@
 
+img.onload = function() {
+	ctx.drawImage(img,0,0);
+}
+
 function create_room(){
 	dataDict = {
 		'type': '1',

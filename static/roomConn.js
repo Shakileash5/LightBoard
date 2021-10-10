@@ -33,11 +33,12 @@ async function create_new_connection(host,port){
 }
 
 function onOpen(){
-	console.log("Connection Opened")
+	console.log("Connection Opened");
+	socketRoom.send(JSON.stringify({"type":"5","message":"Requesting canvas data"}));
 }
 
 function onmessage(data){
-	console.log(data.data,ctx);
+	//console.log(data.data,ctx);
 	data = JSON.parse(data.data);
 	if(data.type == "3"){
 		if(data.action == "draw_start"){
@@ -49,6 +50,20 @@ function onmessage(data){
 		else if(data.action == "draw_end"){
 			ctx.closePath();
 		}
+	}
+	else if(data.type == "5"){
+		dataDict = {
+			"type" : "6",
+			"canvas" : getCanvasData(),
+			"forClient" : data.forClient
+		}
+		socketRoom.send(JSON.stringify(dataDict));
+	}
+	else if(data.type == "6"){
+		img.src = data.canvas;
+	}
+	else if(data.type == "7"){
+		console.log("No canvas data available",data);
 	}
 	
 	
@@ -68,5 +83,10 @@ function sendMsg(x,y,action){
 	socketRoom.send(JSON.stringify(dataDict));
 }
 
+function getCanvasData(){
+	var canvas = document.getElementById("myCanvas");
+	var data = canvas.toDataURL();
+	return data;
 
+}
 

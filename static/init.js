@@ -9,3 +9,5 @@ var started = false;
 // Fill Window Width and Height
 myCanvas.width = window.innerWidth;
 myCanvas.height = window.innerHeight;
+
+var img = new Image();
