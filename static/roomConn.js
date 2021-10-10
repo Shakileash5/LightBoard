@@ -32,10 +32,17 @@ function drawPoints(x,y){
 	//sendMsg(evt.offsetX,evt.offsetY,"draw");
 }
 
-function addClients(){
+function addClients(numberOfClients,flag=false){
 	var clients = document.getElementById("clients");
-	clients.innerHTML = clients.innerHTML+"<div class='clientAcc' style=border-color:#"+Math.floor(Math.random()*16777215).toString(16)+">"+ generateString(2)+"</div>";
-
+	if(flag == true){
+		for(let i = 0; i<numberOfClients;i++){
+			clients.innerHTML = clients.innerHTML+"<div class='clientAcc' style=border-color:#"+Math.floor(Math.random()*16777215).toString(16)+">"+ generateString(1)+"</div>";
+		}
+	}
+	else{
+		clients.innerHTML = clients.innerHTML+"<div class='clientAcc' style=border-color:#"+Math.floor(Math.random()*16777215).toString(16)+">"+ generateString(1)+"</div>";
+	}
+	totalClients += 1;
 }
 
 async function create_new_connection(host,port){
@@ -47,7 +54,7 @@ async function create_new_connection(host,port){
 	document.getElementById("containerDiv").style.display = "none";
 	document.getElementById("canvasDiv").style.display = "block";
 
-	addClients();
+	//addClients();
 }
 
 function onOpen(){
@@ -70,7 +77,13 @@ function onmessage(data){
 		}
 	}
 	else if(data.type == "4"){
-		addClients();
+		if(totalClients == 0){
+			addClients(data.noOfClients,true);
+		}
+		else{
+			addClients(data.noOfClients);
+		}
+		
 	}
 	else if(data.type == "5"){
 		dataDict = {

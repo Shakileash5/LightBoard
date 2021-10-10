@@ -16,3 +16,5 @@ var colors = ["#2ECC71","#9B59B6","#3498DB","E03E1B"]
 var colorIdx = 0
 
 const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+var totalClients = 0;

@@ -25,7 +25,7 @@ class Room:
         print("[+] Clients in the room ",Room.Clients)
         print(f"[+] {websocket} has joined the room")
         await self.sendDict(websocket,json.dumps({"status":"200","type": "2", "message": "Welcome to the chat!"}))
-        await self.send_all({"status":"200","type": "4", "message": f"{websocket} has joined the chat"})
+        await self.send_all({"status":"200","type": "4", "message": f"{websocket} has joined the chat","noOfClients":len(Room.Clients)})
         #print("Okay its now joined")
         return 
 
