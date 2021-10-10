@@ -24,7 +24,7 @@ function drawPoints(x,y){
 
 async function create_new_connection(host,port){
 	socket.close();
-	socketRoom = await new WebSocket('ws://localhost:1201');
+	socketRoom = await new WebSocket('ws://'+host+':'+port.toString());
 	socketRoom.addEventListener("open", onOpen);
 	socketRoom.addEventListener("message", onmessage);
 	socketRoom.addEventListener("close", onclose);

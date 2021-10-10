@@ -75,8 +75,8 @@ window.onload = function() {
 			
 			ctx.beginPath();
 			ctx.moveTo(
-				evt.pageX - 0,
-				evt.pageY - 0
+				evt.offsetX - 0,
+				evt.offsetY - 0
 			);
 			sendMsg(evt.offsetX,evt.offsetY,"draw_start");
 			started = true;
