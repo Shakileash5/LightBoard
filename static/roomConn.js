@@ -1,3 +1,13 @@
+function generateString(length) {
+    let result = ' ';
+    const charactersLength = characters.length;
+    for ( let i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
+}
+
 function startDraw(x,y){
 	console.log("Started Drawing");
 	ctx.beginPath();
@@ -22,6 +32,12 @@ function drawPoints(x,y){
 	//sendMsg(evt.offsetX,evt.offsetY,"draw");
 }
 
+function addClients(){
+	var clients = document.getElementById("clients");
+	clients.innerHTML = clients.innerHTML+"<div class='clientAcc' style=border-color:#"+Math.floor(Math.random()*16777215).toString(16)+">"+ generateString(2)+"</div>";
+
+}
+
 async function create_new_connection(host,port){
 	socket.close();
 	socketRoom = await new WebSocket('ws://'+host+':'+port.toString());
@@ -30,6 +46,8 @@ async function create_new_connection(host,port){
 	socketRoom.addEventListener("close", onclose);
 	document.getElementById("containerDiv").style.display = "none";
 	document.getElementById("canvasDiv").style.display = "block";
+
+	addClients();
 }
 
 function onOpen(){
@@ -50,6 +68,9 @@ function onmessage(data){
 		else if(data.action == "draw_end"){
 			ctx.closePath();
 		}
+	}
+	else if(data.type == "4"){
+		addClients();
 	}
 	else if(data.type == "5"){
 		dataDict = {

@@ -12,6 +12,7 @@ socket.onmessage = function(data) {
 		if(data.status == "200") {
 			if(data.type == "1") {
 				console.log("Room Creds recieved",data);
+				document.getElementById("roomIdDis").innerHTML = data.roomId;
 				create_new_connection(data.host,data.port);
 			}
 			else if(data.type == "2") {
