@@ -18,3 +18,4 @@ var colorIdx = 0
 const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 var totalClients = 0;
+var eraseFlag = false;

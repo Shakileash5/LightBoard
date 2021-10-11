@@ -32,6 +32,11 @@ function drawPoints(x,y){
 	//sendMsg(evt.offsetX,evt.offsetY,"draw");
 }
 
+function erasePoints(x,y){
+	ctx.clearRect(x - 0, y - 0, 10, 10);
+}
+
+
 function addClients(numberOfClients,flag=false){
 	var clients = document.getElementById("clients");
 	if(flag == true){
@@ -74,6 +79,9 @@ function onmessage(data){
 		}
 		else if(data.action == "draw_end"){
 			ctx.closePath();
+		}
+		else if(data.action == "erase"){
+			erasePoints(data.x,data.y);
 		}
 	}
 	else if(data.type == "4"){

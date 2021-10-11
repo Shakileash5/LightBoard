@@ -33,6 +33,14 @@ function join_room(){
 	socket.send(JSON.stringify(dataDict));
 }
 
+function eraseElement(){
+	eraseFlag = true;
+}
+
+function drawElement(){
+	eraseFlag = false;
+}
+
 window.onload = function() {
 	// Set Background Color
     ctx.fillStyle="#fff";
@@ -73,12 +81,14 @@ window.onload = function() {
 
 	function startDraw(evt) {
 			
-			ctx.beginPath();
-			ctx.moveTo(
-				evt.offsetX - 0,
-				evt.offsetY - 0
-			);
-			sendMsg(evt.offsetX,evt.offsetY,"draw_start");
+			if(!eraseFlag){
+				ctx.beginPath();
+				ctx.moveTo(
+					evt.offsetX - 0,
+					evt.offsetY - 0
+				);
+				sendMsg(evt.offsetX,evt.offsetY,"draw_start");
+			}
 			started = true;
 
 		}
@@ -86,7 +96,7 @@ window.onload = function() {
 
 	function drawMove(evt) {
 
-			if (started) {
+			if (started && !eraseFlag) {
 				ctx.lineTo(
 					evt.offsetX - 0,
 					 evt.offsetY - 0
@@ -98,13 +108,20 @@ window.onload = function() {
 				console.log("Drawing",evt.pageX,evt.pageY);
 				sendMsg(evt.offsetX,evt.offsetY,"draw");
 			}
+			else if(started && eraseFlag){
+				ctx.clearRect(evt.offsetX - 0, evt.offsetY - 0, 10, 10);
+				sendMsg(evt.offsetX,evt.offsetY,"erase");
+			}
 
 		}
 	
 	function endDraw(evt) {
 			started = false;
-			sendMsg(evt.offsetX,evt.offsetY,"draw_end");
-		}
+			if(!eraseFlag){
+				sendMsg(evt.offsetX,evt.offsetY,"draw_end");
+			}
+			//sendMsg(evt.offsetX,evt.offsetY,"draw_end");
+	}
 	// Touch Events
 	myCanvas.addEventListener('mousedown', startDraw, false);
 	myCanvas.addEventListener('mouseup', endDraw, false);
