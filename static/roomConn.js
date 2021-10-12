@@ -116,7 +116,7 @@ function onclose(){
 }
 
 function sendMsgAsync(x,y,action){
-	setTimeout(sendMsg(x,y,action), 100);
+	setTimeout(sendMsg(x,y,action), 0);
 }
 function sendMsg(x,y,action){
 	dataDict = {

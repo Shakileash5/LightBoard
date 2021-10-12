@@ -41,6 +41,18 @@ function drawElement(){
 	eraseFlag = false;
 }
 
+function increaseBrushSize(){
+		if(brushSize < 20){
+			brushSize += 2;
+		}
+	}
+
+function decreaseBrushSize(){
+		if(brushSize > 2){
+			brushSize -= 2;
+		}
+	}
+
 window.onload = function() {
 	// Set Background Color
     ctx.fillStyle="#fff";
@@ -79,6 +91,7 @@ window.onload = function() {
 		}
 	};
 
+
 	function startDraw(evt) {
 			
 			if(!eraseFlag){
@@ -87,7 +100,7 @@ window.onload = function() {
 					evt.offsetX - 0,
 					evt.offsetY - 0
 				);
-				sendMsg(evt.offsetX,evt.offsetY,"draw_start");
+				sendMsgAsync(evt.offsetX,evt.offsetY,"draw_start");
 			}
 			started = true;
 
@@ -103,14 +116,14 @@ window.onload = function() {
 				);
 				
 				ctx.strokeStyle = "#000";
-				ctx.lineWidth = 2;
+				ctx.lineWidth = brushSize;
 				ctx.stroke();
 				//console.log("Drawing",evt.pageX,evt.pageY);
-				sendMsg(evt.offsetX,evt.offsetY,"draw");
+				sendMsgAsync(evt.offsetX,evt.offsetY,"draw");
 			}
 			else if(started && eraseFlag){
-				ctx.clearRect(evt.offsetX - 0, evt.offsetY - 0, 10, 10);
-				sendMsg(evt.offsetX,evt.offsetY,"erase");
+				ctx.clearRect(evt.offsetX - 0, evt.offsetY - 0, brushSize*2, brushSize*2);
+				sendMsgAsync(evt.offsetX,evt.offsetY,"erase");
 			}
 
 		}
@@ -118,7 +131,7 @@ window.onload = function() {
 	function endDraw(evt) {
 			started = false;
 			if(!eraseFlag){
-				sendMsg(evt.offsetX,evt.offsetY,"draw_end");
+				sendMsgAsync(evt.offsetX,evt.offsetY,"draw_end");
 			}
 			//sendMsg(evt.offsetX,evt.offsetY,"draw_end");
 	}

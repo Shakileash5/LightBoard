@@ -19,3 +19,4 @@ const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 var totalClients = 0;
 var eraseFlag = false;
+var brushSize = 4;
