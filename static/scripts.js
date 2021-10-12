@@ -103,9 +103,9 @@ window.onload = function() {
 				);
 				
 				ctx.strokeStyle = "#000";
-				ctx.lineWidth = 5;
+				ctx.lineWidth = 2;
 				ctx.stroke();
-				console.log("Drawing",evt.pageX,evt.pageY);
+				//console.log("Drawing",evt.pageX,evt.pageY);
 				sendMsg(evt.offsetX,evt.offsetY,"draw");
 			}
 			else if(started && eraseFlag){

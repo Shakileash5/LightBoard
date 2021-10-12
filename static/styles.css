@@ -129,3 +129,26 @@ input[type=text]{
 	margin: 0;
 	font-weight: bolder;
 }
+
+.floating-toolbar {
+    font-family: sans-serif;
+    background: DodgerBlue;
+	color: white;
+    padding: 5px;;
+    width: 50px;
+    z-index: 100;
+    position: fixed;
+    top: 10%;
+    left: 5px;
+	border: 1 black solid;
+	border-radius: 10px;
+	box-shadow:5px 5px 15px 5px grey;
+  }
+
+  .floating-toolbar a, 
+  .floating-toolbar h3 {
+    font-size: 0.9em;
+    display: block;
+    margin: 0 0.5em;
+    color: white;
+  }

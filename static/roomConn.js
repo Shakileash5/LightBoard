@@ -58,7 +58,7 @@ async function create_new_connection(host,port){
 	socketRoom.addEventListener("close", onclose);
 	document.getElementById("containerDiv").style.display = "none";
 	document.getElementById("canvasDiv").style.display = "block";
-
+	document.getElementById("toolbar").style.display = "block";
 	//addClients();
 }
 
@@ -115,6 +115,9 @@ function onclose(){
 	console.log("Disconnected from room");
 }
 
+function sendMsgAsync(x,y,action){
+	setTimeout(sendMsg(x,y,action), 100);
+}
 function sendMsg(x,y,action){
 	dataDict = {
 		'type': '3',

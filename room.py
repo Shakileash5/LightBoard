@@ -32,7 +32,7 @@ class Room:
     async def unregister(self, websocket):
         Room.Clients.remove(websocket)
         print(f"{websocket} has left the chat")
-        await self.send_all(f"{websocket} has left the chat")
+        await self.send_all({"status":"200","type": "4", "message": f"{websocket} has left the chat","noOfClients":len(Room.Clients)})
     
     async def send_all(self, message,websocket=None):
         for client in Room.Clients:
