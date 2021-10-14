@@ -1,3 +1,9 @@
+
+/**
+ * Generates a random string of the given length.
+ * @param {number} length The length of the string to generate.
+ * @return {string} The generated string. 
+ */
 function generateString(length) {
     let result = ' ';
     const charactersLength = characters.length;
@@ -8,6 +14,12 @@ function generateString(length) {
     return result;
 }
 
+
+/**
+ * Initializes the canvas and the drawing tool.	
+ * @param {number} x The x coordinate of the mouse.
+ * @param {number} y The y coordinate of the mouse.
+ */
 function startDraw(x,y){
 	console.log("Started Drawing");
 	ctx.beginPath();
@@ -40,6 +52,7 @@ function erasePoints(x,y,brushSize){
 function addClients(numberOfClients,flag=false){
 	var clients = document.getElementById("clients");
 	if(flag == true){
+		clients.style.display = "block";
 		for(let i = 0; i<numberOfClients;i++){
 			clients.innerHTML = clients.innerHTML+"<div class='clientAcc' style=border-color:#"+Math.floor(Math.random()*16777215).toString(16)+">"+ generateString(1)+"</div>";
 		}

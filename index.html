@@ -8,25 +8,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a href="#" class="navbar-brand">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2X8-5_QlluMh7mTk9RDfnC1Wi1ZGG82Keahcww_68AB7OTT7aWbQ9ADeXZcMf4ywACo0&usqp=CAU" height="28" alt="CoolBrand">
-            </a>
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav">
-                    <p>Room Id - </p>
-                    <p id="roomIdDis"> </p>
-                </div>
-                <div class="navbar-nav ms-auto" id="clients">
-                    
-                </div>
-            </div>
-        </div>
-    </nav>
+    
+    <img class = "floating-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2X8-5_QlluMh7mTk9RDfnC1Wi1ZGG82Keahcww_68AB7OTT7aWbQ9ADeXZcMf4ywACo0&usqp=CAU" height="28" alt="CoolBrand">
+    <div class="floating-roomid">
+        <p>Room Id </p>
+        <p id="roomIdDis"> </p>
+    </div>
+    <div class="floating-clients" id="clients">  
+    </div>
     <div class="floating-toolbar" id="toolbar" style="display: none;">
         <button class="btn" style="color: white;" onclick="drawElement()"><i class="fa fa-pencil"></i></button>
         <button class="btn" style="color: white;" onclick="eraseElement()"><i class="fa fa-eraser"></i></button>
