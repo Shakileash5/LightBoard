@@ -100,7 +100,7 @@ window.onload = function() {
 					evt.offsetX - 0,
 					evt.offsetY - 0
 				);
-				sendMsgAsync(evt.offsetX,evt.offsetY,"draw_start");
+				sendMsgAsync(evt.offsetX,evt.offsetY,brushSize,"draw_start");
 			}
 			started = true;
 
@@ -119,11 +119,11 @@ window.onload = function() {
 				ctx.lineWidth = brushSize;
 				ctx.stroke();
 				//console.log("Drawing",evt.pageX,evt.pageY);
-				sendMsgAsync(evt.offsetX,evt.offsetY,"draw");
+				sendMsgAsync(evt.offsetX,evt.offsetY,brushSize,"draw");
 			}
 			else if(started && eraseFlag){
 				ctx.clearRect(evt.offsetX - 0, evt.offsetY - 0, brushSize*2, brushSize*2);
-				sendMsgAsync(evt.offsetX,evt.offsetY,"erase");
+				sendMsgAsync(evt.offsetX,evt.offsetY,brushSize,"erase");
 			}
 
 		}
@@ -131,7 +131,7 @@ window.onload = function() {
 	function endDraw(evt) {
 			started = false;
 			if(!eraseFlag){
-				sendMsgAsync(evt.offsetX,evt.offsetY,"draw_end");
+				sendMsgAsync(evt.offsetX,evt.offsetY,brushSize,"draw_end");
 			}
 			//sendMsg(evt.offsetX,evt.offsetY,"draw_end");
 	}

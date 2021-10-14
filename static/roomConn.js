@@ -19,21 +19,21 @@ function startDraw(x,y){
 	//started = true;
 }
 
-function drawPoints(x,y){
+function drawPoints(x,y,brushSize){
 	ctx.lineTo(
 		x - 0,
 		y - 0
 	);
 
 	ctx.strokeStyle = '#000';
-	ctx.lineWidth = 5;
+	ctx.lineWidth = brushSize;
 	ctx.stroke();
 	console.log("Drawing");
 	//sendMsg(evt.offsetX,evt.offsetY,"draw");
 }
 
-function erasePoints(x,y){
-	ctx.clearRect(x - 0, y - 0, 10, 10);
+function erasePoints(x,y,brushSize){
+	ctx.clearRect(x - 0, y - 0, brushSize*2, brushSize*2);
 }
 
 
@@ -75,13 +75,13 @@ function onmessage(data){
 			startDraw(data.x,data.y);
 		}
 		else if(data.action == "draw"){
-			drawPoints(data.x,data.y);
+			drawPoints(data.x,data.y,data.brushSize);
 		}
 		else if(data.action == "draw_end"){
 			ctx.closePath();
 		}
 		else if(data.action == "erase"){
-			erasePoints(data.x,data.y);
+			erasePoints(data.x,data.y,data.brushSize);
 		}
 	}
 	else if(data.type == "4"){
@@ -115,15 +115,16 @@ function onclose(){
 	console.log("Disconnected from room");
 }
 
-function sendMsgAsync(x,y,action){
-	setTimeout(sendMsg(x,y,action), 0);
+function sendMsgAsync(x,y,brushSize,action){
+	setTimeout(sendMsg(x,y,brushSize,action), 0);
 }
-function sendMsg(x,y,action){
+function sendMsg(x,y,brushSize,action){
 	dataDict = {
 		'type': '3',
 		'action': action,
 		'x': x,
 		'y': y,
+		'brushSize':brushSize
 	}
 	socketRoom.send(JSON.stringify(dataDict));
 }
