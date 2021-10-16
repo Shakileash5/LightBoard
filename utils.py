@@ -36,13 +36,13 @@ def getFirstFreePorts(host, port_start, port_end,rooms):
     # return no available ports
     return -1
 
-def roomCreationUtil(rooms,hostName,port_start,port_end):
+def roomCreationUtil(rooms,hostName,port_start,port_end,serverPorts):
     roomId = random.randint(1000,9999)
     dataDict = {}
     while roomId in rooms:
         roomId = random.randint(1000,9999)
     # TODO: check if port is available
-    freePort = getFirstFreePorts(hostName,port_start+1, port_end,rooms) #port_start+1 #
+    freePort = serverPorts[0] #getFirstFreePorts(hostName,port_start+1, port_end,rooms) #port_start+1 #
     print("Free port: ", freePort)
     if freePort == -1:
         print("[!] No free ports")

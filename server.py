@@ -21,11 +21,11 @@ HOST_NAME = "127.0.0.1" # host name
 PORT_NUMBER = 1200 # port number
 MAX_PACKET = 32768
 
-# TODO: interprocess communication
+# TODO: free port list
 
 class Server:
     rooms = dict()
-    portList = list()
+    portList = list(range(PORT_START,PORT_END))
     manager = None
     isRunning = False
     pipe = None
@@ -62,7 +62,7 @@ class Server:
             Server.portList.insert(0,int(releasedPort))
             print(releasedPort,type(releasedPort),Server.rooms)
             del Server.rooms[int(roomId)]
-            print(Server.rooms,Server.portList)
+            #print(Server.rooms,Server.portList)
             if len(list(Server.rooms.keys())) == 0:
                 Server.isRunning = False
                 print("[+] Room Manager is now terminated")
@@ -76,9 +76,9 @@ class Server:
             print("[+] Message",data)
             dataDict = {}
             if int(data['type']) == 1:
-                freePort,roomId = utils.roomCreationUtil(Server.rooms,HOST_NAME,PORT_START,PORT_END)
+                freePort,roomId = utils.roomCreationUtil(Server.rooms,HOST_NAME,PORT_START,PORT_END,Server.portList)
                 print("[+] Free Port",freePort)
-                PORT_START = freePort + 1
+                #PORT_START = freePort + 1
                 if freePort == -1:
                     dataDict["status"] = 500
                     dataDict["type"] = -1
@@ -94,12 +94,13 @@ class Server:
                     if Server.manager == None or Server.isRunning == False:
                         Server.manager = threading.Thread(target=self.managerProcess)
                         Server.pipe_parent,Server.pipe_child = multiprocessing.Pipe()
-                        print("pipe is ready \n\n\n",Server.pipe_parent)
+                        #print("pipe is ready \n\n\n",Server.pipe_parent)
                         Server.manager.start()
                         print("[+] Room Manager is now started")
-                    print(Server.pipe_parent)
+                    #print(Server.pipe_parent)
                     process = multiprocessing.Process(target=room.main, args=(roomId,HOST_NAME,freePort,Server.pipe_child))
                     process.start()
+                    Server.portList.pop(0)
                     Server.rooms[roomId] = {"host":HOST_NAME,"port":freePort,"process":process}
 
             elif int(data['type']) == 2:
