@@ -115,10 +115,10 @@ input[type=text]{
     transition:.3s;
   }
   
-  input[type=text]:focus{
+input[type=text]:focus{
     border-color:dodgerBlue;
-    box-shadow:0 0 8px 0 dodgerBlue;
-  }
+	box-shadow:0 0 8px 0 dodgerBlue;
+}
 
 .clientAcc{
 	border: 1px green solid;
@@ -138,17 +138,65 @@ input[type=text]{
     width: 50px;
     z-index: 100;
     position: fixed;
-    top: 10%;
+    top: 30%;
     left: 5px;
 	border: 1 black solid;
 	border-radius: 10px;
 	box-shadow:5px 5px 15px 5px grey;
   }
 
-  .floating-toolbar a, 
-  .floating-toolbar h3 {
-    font-size: 0.9em;
-    display: block;
-    margin: 0 0.5em;
-    color: white;
+.floating-clients {
+	font-family: sans-serif;
+	background: DodgerBlue;
+	color: white;
+	display: none;
+	padding: 5px;;
+	width: 50px;
+	z-index: 100;
+	position: fixed;
+	top: 15%;
+	right: 5px;
+	border: 1 black solid;
+	border-radius: 10px;
+	box-shadow:5px 5px 15px 5px grey;
   }
+
+.floating-logo{
+	font-family: sans-serif;
+	color: white;
+	height: 40px;
+	width: 100px;
+	z-index: 100;
+	position: fixed;
+	top: 1%;
+	left: 5px;
+	border: 1 black solid;
+	border-radius: 5px;
+	box-shadow:1px 1px 5px 1px grey;
+}
+
+.floating-roomid {
+	font-family: sans-serif;
+	background: DodgerBlue;
+	color: white;
+	padding: 5px;
+	width: 80px;
+	z-index: 100;
+	position: fixed;
+	display: none;
+	top: 1%;
+	right: 5px;
+	border: 1 black solid;
+	border-radius: 10px;
+	box-shadow:5px 5px 15px 5px grey;
+}
+
+.main::-webkit-scrollbar {
+	display: none;
+}
+  
+/* Hide scrollbar for IE, Edge and Firefox */
+.main {
+	-ms-overflow-style: none;  /* IE and Edge */
+	scrollbar-width: none;  /* Firefox */
+}

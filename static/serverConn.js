@@ -13,6 +13,7 @@ socket.onmessage = function(data) {
 			if(data.type == "1") {
 				console.log("Room Creds recieved",data);
 				document.getElementById("roomIdDis").innerHTML = data.roomId;
+				document.getElementById("floatRoomId").style.display = "block";
 				create_new_connection(data.host,data.port);
 			}
 			else if(data.type == "2") {

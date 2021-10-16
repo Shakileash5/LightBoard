@@ -7,14 +7,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body>
-    
+<body class="main"> 
     <img class = "floating-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2X8-5_QlluMh7mTk9RDfnC1Wi1ZGG82Keahcww_68AB7OTT7aWbQ9ADeXZcMf4ywACo0&usqp=CAU" height="28" alt="CoolBrand">
-    <div class="floating-roomid">
-        <p>Room Id </p>
-        <p id="roomIdDis"> </p>
+    <div class="floating-roomid" id="floatRoomId">
+        <p style="margin: 0%;">Room Id </p>
+        <button style="border: none;background-color: transparent;" onclick="copyToClipboard()">
+            <p id="roomIdDis" style="color: white;height: 10;" >
+            </p>
+        </button>    
     </div>
     <div class="floating-clients" id="clients">  
+    
     </div>
     <div class="floating-toolbar" id="toolbar" style="display: none;">
         <button class="btn" style="color: white;" onclick="drawElement()"><i class="fa fa-pencil"></i></button>
@@ -22,30 +25,30 @@
         <button class="btn" style="color: white;" onclick="increaseBrushSize()"><i class="fa fa-plus"></i></button>
         <button class="btn" style="color: white;" onclick="decreaseBrushSize()"><i class="fa fa-minus"></i></button>
     </div>
-        <div id="canvasDiv">
-            <canvas id="myCanvas">
-                Sorry, your browser does not support HTML5 canvas technology.
-            </canvas>
-        </div>
-        <div id="containerDiv" class="container" >
-            <div id="controls">
-                <h2>
-                    Choose what you have to do ...
-                </h2>
-                <div id="elements">
-                    <button id="joinRoom" class="button1" onclick="display_joincred()">Join Room</button>
+    <div id="canvasDiv">
+        <canvas id="myCanvas">
+            Sorry, your browser does not support HTML5 canvas technology.
+        </canvas>
+    </div>
+    <div id="containerDiv" class="container" >
+        <div id="controls">
+            <h2>
+                Choose what you have to do ...
+            </h2>
+            <div id="elements">
+                <button id="joinRoom" class="button1" onclick="display_joincred()">Join Room</button>
                     
-                    <button id="createRoom" class="button2" onclick="create_room()">Create Room</button>
-                </div>
-            </div>
-
-            <div id="joinCreds">
-                <div id="elements">
-                    <input type="text" id="room_id" placeholder="Enter the Room ID you need to join ...">
-                    <button id="joinRoom" class="button1" onclick="join_room()">Join Room</button>
-                </div>
+                <button id="createRoom" class="button2" onclick="create_room()">Create Room</button>
             </div>
         </div>
+
+        <div id="joinCreds">
+            <div id="elements">
+                <input type="text" id="room_id" placeholder="Enter the Room ID you need to join ...">
+                <button id="joinRoom" class="button1" onclick="join_room()">Join Room</button>
+            </div>
+        </div>
+    </div>
            
 </body>
 <script type="text/JavaScript" src="static/init.js"></script>

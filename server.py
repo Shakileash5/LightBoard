@@ -1,3 +1,4 @@
+from multiprocessing import managers
 import socket
 import os
 import sys
@@ -20,9 +21,16 @@ HOST_NAME = "127.0.0.1" # host name
 PORT_NUMBER = 1200 # port number
 MAX_PACKET = 32768
 
+# TODO: interprocess communication
 
 class Server:
     rooms = dict()
+    portList = list()
+    manager = None
+    isRunning = False
+    pipe = None
+    pipe_parent = None
+    pipe_child = None
     
     async def register(self, websocket):
         #self.clients.add(websocket)
@@ -45,6 +53,21 @@ class Server:
     
     async def sendDict(self,websocket:WebSocketServerProtocol,data):
         await websocket.send(json.dumps(data))
+    
+    def managerProcess(self):
+        
+        while True:
+            Server.isRunning = True
+            releasedPort,roomId = Server.pipe_parent.recv()
+            Server.portList.insert(0,int(releasedPort))
+            print(releasedPort,type(releasedPort),Server.rooms)
+            del Server.rooms[int(roomId)]
+            print(Server.rooms,Server.portList)
+            if len(list(Server.rooms.keys())) == 0:
+                Server.isRunning = False
+                print("[+] Room Manager is now terminated")
+                break
+        return
 
     async def distribute(self,websocket:WebSocketServerProtocol):
         global PORT_START
@@ -68,7 +91,14 @@ class Server:
                     dataDict["roomId"] = roomId
                     dataDict["port"] = freePort
                     dataDict["host"] = HOST_NAME
-                    process = multiprocessing.Process(target=room.main, args=(roomId,HOST_NAME,freePort,))
+                    if Server.manager == None or Server.isRunning == False:
+                        Server.manager = threading.Thread(target=self.managerProcess)
+                        Server.pipe_parent,Server.pipe_child = multiprocessing.Pipe()
+                        print("pipe is ready \n\n\n",Server.pipe_parent)
+                        Server.manager.start()
+                        print("[+] Room Manager is now started")
+                    print(Server.pipe_parent)
+                    process = multiprocessing.Process(target=room.main, args=(roomId,HOST_NAME,freePort,Server.pipe_child))
                     process.start()
                     Server.rooms[roomId] = {"host":HOST_NAME,"port":freePort,"process":process}
 

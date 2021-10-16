@@ -53,6 +53,12 @@ function decreaseBrushSize(){
 		}
 	}
 
+function copyToClipboard() {
+  var copyText = document.getElementById("roomIdDis");
+  navigator.clipboard.writeText(copyText.innerText);
+}
+
+
 window.onload = function() {
 	// Set Background Color
     ctx.fillStyle="#fff";
