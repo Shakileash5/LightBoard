@@ -20,3 +20,10 @@ const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var totalClients = 0;
 var eraseFlag = false;
 var brushSize = 4;
+
+function set_snackbar(message) {
+    var x = document.getElementById("snackbar");
+    x.innerHTML = message;
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}

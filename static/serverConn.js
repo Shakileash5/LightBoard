@@ -3,6 +3,7 @@ var socketRoom ;
 
 socket.onopen = function() {
 		console.log('Connected to server');
+		set_snackbar("Connected to server");
 };
 
 socket.onmessage = function(data) {
@@ -28,5 +29,6 @@ socket.onmessage = function(data) {
 
 socket.onclose = function() {
 	console.log('Disconnected from server');
+	set_snackbar("Disconnected from server");
 };
 

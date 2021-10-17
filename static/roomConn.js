@@ -59,8 +59,10 @@ function addClients(numberOfClients,flag=false){
 	}
 	else{
 		clients.innerHTML = clients.innerHTML+"<div class='clientAcc' style=border-color:#"+Math.floor(Math.random()*16777215).toString(16)+">"+ generateString(1)+"</div>";
+		set_snackbar("New client joined the room");
 	}
 	totalClients += 1;
+	
 }
 
 function removeClient(){
@@ -69,7 +71,7 @@ function removeClient(){
 	if(descendants.length > 0){
 		clients.removeChild(descendants[descendants.length-1]);
 	}
-	
+	set_snackbar("Client left the room");
 }
 
 
@@ -82,12 +84,13 @@ async function create_new_connection(host,port){
 	document.getElementById("containerDiv").style.display = "none";
 	document.getElementById("canvasDiv").style.display = "block";
 	document.getElementById("toolbar").style.display = "block";
-	//addClients();
+	set_snackbar("Redirecting to the room!.")
 }
 
 function onOpen(){
 	console.log("Connection Opened");
 	socketRoom.send(JSON.stringify({"type":"5","message":"Requesting canvas data"}));
+	set_snackbar("Connected to room");
 }
 
 function onmessage(data){
@@ -139,6 +142,7 @@ function onmessage(data){
 
 function onclose(){
 	console.log("Disconnected from room");
+	set_snackbar("Disconnected from room")
 }
 
 function sendMsgAsync(x,y,brushSize,action){
