@@ -6,6 +6,7 @@ import asyncio
 import utils
 import os 
 import signal
+from logger import Logger
 
 # type - 3 canvas draws
 # type - 4 new member added
@@ -17,17 +18,19 @@ import signal
 # create a echo server class
 class Room:
     Clients = set()
+    LoggerObj = Logger.getInstance()
 
     def __init__(self, roomId, host, port,serverPipe):
         self.roomId = roomId
         self.host = host
         self.port = port
         self.pipe = serverPipe
+        Room.LoggerObj.info(f"[+] Room {roomId} created",None,roomId)
     
     async def register(self, websocket):
         Room.Clients.add(websocket)
-        print("[+] Clients in the room ",Room.Clients)
-        print(f"[+] {websocket} has joined the room")
+        Room.LoggerObj.debug("[+] Clients in the room ",Room.Clients,self.roomId)
+        Room.LoggerObj.info(f"[+] {websocket} has joined the room",None,self.roomId)
         await self.sendDict(websocket,json.dumps({"status":"200","type": "2", "message": "Welcome to the chat!"}))
         await self.send_all({"status":"200","type": "4", "message": f"{websocket} has joined the chat","noOfClients":len(Room.Clients)})
         #print("Okay its now joined")
@@ -35,10 +38,10 @@ class Room:
 
     async def unregister(self, websocket):
         Room.Clients.remove(websocket)
-        print(f"{websocket} has left the chat")
+        Room.LoggerObj.info(f"{websocket} has left the chat",None,self.roomId)
         await self.send_all({"status":"200","type": "8", "message": f"{websocket} has left the chat","noOfClients":len(Room.Clients)})
         if len(Room.Clients) == 0:
-            print("[+] No clients in the room")
+            Room.LoggerObj.info("[+] No clients in the room",None,self.roomId)
             self.pipe.send((self.port,self.roomId))
             os.kill(os.getpid(), signal.SIGINT)
         return
@@ -105,9 +108,8 @@ class Room:
 
 def main(roomId,host, port, serverPipe):
     # create a Room
-    print(serverPipe)
+    # print(serverPipe)
     room_ = Room(roomId,host,port,serverPipe)
     start_room = websockets.serve(room_.handle_request, host, port)
-    print("[+] Room Started at ",host,port)
     asyncio.get_event_loop().run_until_complete(start_room)
     asyncio.get_event_loop().run_forever()

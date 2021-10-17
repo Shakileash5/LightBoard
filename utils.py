@@ -7,6 +7,7 @@ import websockets
 import asyncio
 import multiprocessing
 import sample
+from logger import Logger
 
 
 async def testConnection(websocket, path):
@@ -39,13 +40,14 @@ def getFirstFreePorts(host, port_start, port_end,rooms):
 def roomCreationUtil(rooms,hostName,port_start,port_end,serverPorts):
     roomId = random.randint(1000,9999)
     dataDict = {}
+    loggerObj = Logger.getInstance()
     while roomId in rooms:
         roomId = random.randint(1000,9999)
     # TODO: check if port is available
     freePort = serverPorts[0] #getFirstFreePorts(hostName,port_start+1, port_end,rooms) #port_start+1 #
-    print("Free port: ", freePort)
+    loggerObj.debug("Free port: ", freePort)
     if freePort == -1:
-        print("[!] No free ports")
+        loggerObj.debug("[!] No free ports")
     return freePort,roomId
 
 def exception_handler(func):
@@ -53,6 +55,8 @@ def exception_handler(func):
         try:
             return func(*args, **kwargs)
         except Exception as e:
-            print("[!] Exception: ", e)
+            loggerObj = Logger.getInstance()
+            #print("[!] Exception: ", e)
+            loggerObj.error("[!] Exception: ", e)
             return None
     return wrapper

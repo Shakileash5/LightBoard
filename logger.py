@@ -1,4 +1,5 @@
 import datetime
+import utils
 
 class bcolors:
     HEADER = '\033[95m'
@@ -20,27 +21,63 @@ class Logger:
     def __init__(self):
         pass
 
-    def info(self,message):
+    def info(self,message,data=None,roomId=None):
         time = datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")
-        level = bcolors.OKBLUE+"info".ljust(Logger.PADDING)+bcolors.ENDC
-        print(level+"fea")
-        print("{}|{}|{}".format(time,level,message))
+        level = "info"#bcolors.OKBLUE+"info".ljust(Logger.PADDING)+bcolors.ENDC
+        #print(level+"fea")
+        if data == None:
+            if roomId:
+                print("Room - {}|{}|{}|{}".format(roomId,time,level,message))    
+            else:
+                print("{}|{}|{}".format(time,level,message))
+        else:
+            if roomId:
+                print("Room - {}|{}|{}|{}|data: ".format(roomId,time,level,message,str(data)))
+            else:
+                print("{}|{}|{}|data: ".format(time,level,message,str(data)))
 
-    def warning(self,message):
+    def warning(self,message,data=None,roomId=None):
         time = datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")
-        level = bcolors.WARNING+"warning".ljust(Logger.PADDING)+bcolors.ENDC
-        print("{}|{}|{}".format(time,level,message))
+        level = "warning"#bcolors.WARNING+"warning".ljust(Logger.PADDING)+bcolors.ENDC
+        if data == None:
+            if roomId:
+                print("Room - {}|{}|{}|{}".format(roomId,time,level,message))    
+            else:
+                print("{}|{}|{}".format(time,level,message))
+        else:
+            if roomId:
+                print("Room - {}|{}|{}|{}|data: ".format(roomId,time,level,message,str(data)))
+            else:
+                print("{}|{}|{}|data: ".format(time,level,message,str(data)))
     
-    def error(self,message):
+    def error(self,message,data=None,roomId=None):
         time = datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")
-        level = bcolors.FAIL+"error".ljust(Logger.PADDING)+bcolors.ENDC
-        print("{}|{}|{}".format(time,level,message))
+        level = "error"#bcolors.FAIL+"error".ljust(Logger.PADDING)+bcolors.ENDC
+        if data == None:
+            if roomId:
+                print("Room - {}|{}|{}|{}".format(roomId,time,level,message))    
+            else:
+                print("{}|{}|{}".format(time,level,message))
+        else:
+            if roomId:
+                print("Room - {}|{}|{}|{}|data: ".format(roomId,time,level,message,str(data)))
+            else:
+                print("{}|{}|{}|data: ".format(time,level,message,str(data)))
     
-    def debug(self,message):
+    def debug(self,message,data=None,roomId=None):
         if Logger.DEBUG:
             time = datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")
-            level = bcolors.OKCYAN+"debug".ljust(Logger.PADDING)+bcolors.ENDC
-            print("{}|{}|{}".format(time,level,message))
+            level = "debug"#bcolors.OKCYAN+"debug".ljust(Logger.PADDING)+bcolors.ENDC
+            if data == None:
+                if roomId:
+                    print("Room - {}|{}|{}|{}".format(roomId,time,level,message))    
+                else:
+                    print("{}|{}|{}".format(time,level,message))
+            else:
+                if roomId:
+                    print("Room - {}|{}|{}|{}|data: ".format(roomId,time,level,message,str(data)))
+                else:
+                    print("{}|{}|{}|data: ".format(time,level,message,str(data)))
     
     @staticmethod
     def getInstance():
@@ -59,10 +96,17 @@ class Logger:
     @staticmethod
     def setPadding(padding):
         Logger.PADDING = padding
-    
+
+def a():
+    Logger.getInstance().info("test")
+    Logger.getInstance().warning("test")
+    Logger.getInstance().error("test")
+    Logger.getInstance().debug("test")
+
 if __name__ == "__main__":
     logger = Logger.getInstance()
     logger.info("test")
     logger.warning("test")
     logger.error("test")
     logger.debug("test")
+    a()

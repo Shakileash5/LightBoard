@@ -12,6 +12,7 @@ from websockets import WebSocketServerProtocol
 import asyncio
 import utils
 import room
+from logger import Logger
 
 # initialize variables
 PORT_START = 1200
@@ -31,19 +32,21 @@ class Server:
     pipe = None
     pipe_parent = None
     pipe_child = None
+    LoggerObj = Logger.getInstance()
     
     @utils.exception_handler
     async def register(self, websocket):
         #self.clients.add(websocket)
-        print("[+] Clients in the room ",Server.rooms)
-        print(f"[+] {websocket} has joined the chat")
+        #print("[+] Clients in the room ",Server.rooms)
+        Server.LoggerObj.debug("[+] Clients in the room ",Server.rooms)
+        Server.LoggerObj.info(f"[+] {websocket} has joined the chat")
         await websocket.send(json.dumps({"status":"200","type": "message", "message": "Welcome to the chat!"}))
         #await self.send_all(f"{websocket} has joined the chat")
         return 
     
     async def unregister(self, websocket):
         #self.clients.remove(websocket)
-        print(f"{websocket} has left the chat")
+        Server.LoggerObj.info(f"{websocket} has left the chat")
         #await self.send_all(f"{websocket} has left the chat")
         return
     
@@ -67,12 +70,12 @@ class Server:
             Server.isRunning = True
             releasedPort,roomId = Server.pipe_parent.recv()
             Server.portList.insert(0,int(releasedPort))
-            print(releasedPort,type(releasedPort),Server.rooms)
+            Server.LoggerObj.debug("Check for ports",(releasedPort,type(releasedPort),Server.rooms))
             del Server.rooms[int(roomId)]
             #print(Server.rooms,Server.portList)
             if len(list(Server.rooms.keys())) == 0:
                 Server.isRunning = False
-                print("[+] Room Manager is now terminated")
+                Server.LoggerObj.info("[+] Room Manager is now terminated")
                 break
         return
 
@@ -83,7 +86,7 @@ class Server:
             Server.pipe_parent,Server.pipe_child = multiprocessing.Pipe()
             #print("pipe is ready \n\n\n",Server.pipe_parent)
             Server.manager.start()
-            print("[+] Room Manager is now started")
+            Server.LoggerObj.info("[+] Room Manager is now started")
             #print(Server.pipe_parent)
         return 
 
@@ -91,14 +94,14 @@ class Server:
     def create_room(self,websocket):
         global PORT_START
         freePort,roomId = utils.roomCreationUtil(Server.rooms,HOST_NAME,PORT_START,PORT_END,Server.portList)
-        print("[+] Free Port",freePort)
+        Server.LoggerObj.debug("[+] Free Port",freePort)
         dataDict = {}
         if freePort == -1:
             dataDict["status"] = 500
             dataDict["type"] = -1
             dataDict["message"] = "No free ports"
         else:
-            print("[+] Free port available for ",websocket ,": ",freePort)
+            Server.LoggerObj.debug(f"[+] Free port available for {websocket} : {freePort}")
             dataDict["status"] = 200
             dataDict["type"] = 1
             dataDict["message"] = "Room created"
@@ -116,7 +119,7 @@ class Server:
     def join_room(self,websocket,data):
         dataDict = {}
         if int(data['roomId']) in Server.rooms:
-            print("[+] Room available for ",websocket ,": ",data['roomId'])
+            Server.LoggerObj.info(f"[+] Room available for {websocket}: {data['roomId']}")
             #Server.rooms[data['roomId']].append(websocket)
             dataDict["status"] = 200
             dataDict["type"] = 1
@@ -125,7 +128,7 @@ class Server:
             dataDict["host"] = Server.rooms[int(data['roomId'])]['host']
             dataDict["port"] = Server.rooms[int(data['roomId'])]['port']
         else:
-            print("[+] Room not available for ",websocket ,": ",data['roomId'])
+            Server.LoggerObj.error(f"[+] Room not available for {websocket} : {data['roomId']}")
             dataDict["status"] = 400
             dataDict["type"] = -1
             dataDict["message"] = "Room does not exist"
@@ -136,7 +139,7 @@ class Server:
         
         async for data in websocket:
             data = json.loads(data)
-            print("[+] Message",data)
+            Server.LoggerObj.debug("[+] Message",data)
             dataDict = {}
             if int(data['type']) == 1:
                 dataDict = self.create_room(websocket)
@@ -146,7 +149,7 @@ class Server:
                 dataDict = self.join_room(websocket,data)
 
             await self.sendDict(websocket, dataDict)
-            print("[+] Message sent to ",websocket,": ",dataDict)
+            Server.LoggerObj.info(f"[+] Message sent to {websocket}: {dataDict}")
             return
 
     @utils.exception_handler
