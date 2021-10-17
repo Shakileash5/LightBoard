@@ -41,11 +41,16 @@ function drawElement(){
 	eraseFlag = false;
 }
 
+
+/**	
+ *
+ *	
+ */
 function increaseBrushSize(){
 		if(brushSize < 20){
 			brushSize += 2;
 		}
-	}
+}
 
 function decreaseBrushSize(){
 		if(brushSize > 2){
@@ -135,11 +140,11 @@ window.onload = function() {
 		}
 	
 	function endDraw(evt) {
-			started = false;
-			if(!eraseFlag){
-				sendMsgAsync(evt.offsetX,evt.offsetY,brushSize,"draw_end");
-			}
-			//sendMsg(evt.offsetX,evt.offsetY,"draw_end");
+		started = false;
+		if(!eraseFlag){
+			sendMsgAsync(evt.offsetX,evt.offsetY,brushSize,"draw_end");
+		}
+		//sendMsg(evt.offsetX,evt.offsetY,"draw_end");
 	}
 	// Touch Events
 	myCanvas.addEventListener('mousedown', startDraw, false);

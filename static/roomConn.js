@@ -63,6 +63,16 @@ function addClients(numberOfClients,flag=false){
 	totalClients += 1;
 }
 
+function removeClient(){
+	let clients = document.getElementById("clients");
+	let descendants = clients.getElementsByTagName("*");
+	if(descendants.length > 0){
+		clients.removeChild(descendants[descendants.length-1]);
+	}
+	
+}
+
+
 async function create_new_connection(host,port){
 	socket.close();
 	socketRoom = await new WebSocket('ws://'+host+':'+port.toString());
@@ -120,7 +130,10 @@ function onmessage(data){
 	else if(data.type == "7"){
 		console.log("No canvas data available",data);
 	}
-	
+	else if(data.type == "8"){
+		removeClient();
+		//console.log("one client left the room",data);
+	}
 	
 }
 
