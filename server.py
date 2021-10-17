@@ -21,7 +21,7 @@ HOST_NAME = "127.0.0.1" # host name
 PORT_NUMBER = 1200 # port number
 MAX_PACKET = 32768
 
-# TODO: free port list
+# TODO: logger and documentation
 
 class Server:
     rooms = dict()
@@ -32,28 +32,35 @@ class Server:
     pipe_parent = None
     pipe_child = None
     
+    @utils.exception_handler
     async def register(self, websocket):
         #self.clients.add(websocket)
         print("[+] Clients in the room ",Server.rooms)
         print(f"[+] {websocket} has joined the chat")
         await websocket.send(json.dumps({"status":"200","type": "message", "message": "Welcome to the chat!"}))
         #await self.send_all(f"{websocket} has joined the chat")
+        return 
     
     async def unregister(self, websocket):
         #self.clients.remove(websocket)
         print(f"{websocket} has left the chat")
         #await self.send_all(f"{websocket} has left the chat")
+        return
     
+    @utils.exception_handler
     async def send_all(self, message):
         for client in self.clients:
             await client.send(message) 
 
+    @utils.exception_handler
     async def handle_message(self, websocket, message):
         await self.send_all(f"[!] {websocket} says: {message}")
     
+    @utils.exception_handler
     async def sendDict(self,websocket:WebSocketServerProtocol,data):
         await websocket.send(json.dumps(data))
     
+    @utils.exception_handler
     def manage_process(self):
         
         while True:
@@ -69,6 +76,7 @@ class Server:
                 break
         return
 
+    @utils.exception_handler
     def set_manager(self):
         if Server.manager == None or Server.isRunning == False:
             Server.manager = threading.Thread(target=self.manage_process)
@@ -79,6 +87,7 @@ class Server:
             #print(Server.pipe_parent)
         return 
 
+    @utils.exception_handler
     def create_room(self,websocket):
         global PORT_START
         freePort,roomId = utils.roomCreationUtil(Server.rooms,HOST_NAME,PORT_START,PORT_END,Server.portList)
@@ -103,6 +112,7 @@ class Server:
             Server.rooms[roomId] = {"host":HOST_NAME,"port":freePort,"process":process}
         return dataDict
     
+    @utils.exception_handler
     def join_room(self,websocket,data):
         dataDict = {}
         if int(data['roomId']) in Server.rooms:
@@ -121,6 +131,7 @@ class Server:
             dataDict["message"] = "Room does not exist"
         return dataDict
 
+    @utils.exception_handler
     async def distribute(self,websocket:WebSocketServerProtocol):
         
         async for data in websocket:
@@ -138,6 +149,7 @@ class Server:
             print("[+] Message sent to ",websocket,": ",dataDict)
             return
 
+    @utils.exception_handler
     async def handle_request(self, websocket, path):
         await self.register(websocket)
         try:

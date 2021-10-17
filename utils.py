@@ -47,3 +47,12 @@ def roomCreationUtil(rooms,hostName,port_start,port_end,serverPorts):
     if freePort == -1:
         print("[!] No free ports")
     return freePort,roomId
+
+def exception_handler(func):
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            print("[!] Exception: ", e)
+            return None
+    return wrapper

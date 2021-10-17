@@ -23,7 +23,7 @@ class Room:
         self.host = host
         self.port = port
         self.pipe = serverPipe
-
+    
     async def register(self, websocket):
         Room.Clients.add(websocket)
         print("[+] Clients in the room ",Room.Clients)
@@ -96,6 +96,8 @@ class Room:
         try:
             await self.distribute(websocket)
             print("[+] Waiting for messages")
+        except Exception as e:
+            print("[-] Error",e)
         finally:
             await self.unregister(websocket)
 
