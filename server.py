@@ -54,7 +54,7 @@ class Server:
     async def sendDict(self,websocket:WebSocketServerProtocol,data):
         await websocket.send(json.dumps(data))
     
-    def managerProcess(self):
+    def manage_process(self):
         
         while True:
             Server.isRunning = True
@@ -69,56 +69,71 @@ class Server:
                 break
         return
 
-    async def distribute(self,websocket:WebSocketServerProtocol):
+    def set_manager(self):
+        if Server.manager == None or Server.isRunning == False:
+            Server.manager = threading.Thread(target=self.manage_process)
+            Server.pipe_parent,Server.pipe_child = multiprocessing.Pipe()
+            #print("pipe is ready \n\n\n",Server.pipe_parent)
+            Server.manager.start()
+            print("[+] Room Manager is now started")
+            #print(Server.pipe_parent)
+        return 
+
+    def create_room(self,websocket):
         global PORT_START
+        freePort,roomId = utils.roomCreationUtil(Server.rooms,HOST_NAME,PORT_START,PORT_END,Server.portList)
+        print("[+] Free Port",freePort)
+        dataDict = {}
+        if freePort == -1:
+            dataDict["status"] = 500
+            dataDict["type"] = -1
+            dataDict["message"] = "No free ports"
+        else:
+            print("[+] Free port available for ",websocket ,": ",freePort)
+            dataDict["status"] = 200
+            dataDict["type"] = 1
+            dataDict["message"] = "Room created"
+            dataDict["roomId"] = roomId
+            dataDict["port"] = freePort
+            dataDict["host"] = HOST_NAME
+            self.set_manager()
+            process = multiprocessing.Process(target=room.main, args=(roomId,HOST_NAME,freePort,Server.pipe_child))
+            process.start()
+            Server.portList.pop(0)
+            Server.rooms[roomId] = {"host":HOST_NAME,"port":freePort,"process":process}
+        return dataDict
+    
+    def join_room(self,websocket,data):
+        dataDict = {}
+        if int(data['roomId']) in Server.rooms:
+            print("[+] Room available for ",websocket ,": ",data['roomId'])
+            #Server.rooms[data['roomId']].append(websocket)
+            dataDict["status"] = 200
+            dataDict["type"] = 1
+            dataDict["message"] = "Room Available"
+            dataDict["roomId"] = int(data['roomId'])
+            dataDict["host"] = Server.rooms[int(data['roomId'])]['host']
+            dataDict["port"] = Server.rooms[int(data['roomId'])]['port']
+        else:
+            print("[+] Room not available for ",websocket ,": ",data['roomId'])
+            dataDict["status"] = 400
+            dataDict["type"] = -1
+            dataDict["message"] = "Room does not exist"
+        return dataDict
+
+    async def distribute(self,websocket:WebSocketServerProtocol):
+        
         async for data in websocket:
             data = json.loads(data)
             print("[+] Message",data)
             dataDict = {}
             if int(data['type']) == 1:
-                freePort,roomId = utils.roomCreationUtil(Server.rooms,HOST_NAME,PORT_START,PORT_END,Server.portList)
-                print("[+] Free Port",freePort)
-                #PORT_START = freePort + 1
-                if freePort == -1:
-                    dataDict["status"] = 500
-                    dataDict["type"] = -1
-                    dataDict["message"] = "No free ports"
-                else:
-                    print("[+] Free port available for ",websocket ,": ",freePort)
-                    dataDict["status"] = 200
-                    dataDict["type"] = 1
-                    dataDict["message"] = "Room created"
-                    dataDict["roomId"] = roomId
-                    dataDict["port"] = freePort
-                    dataDict["host"] = HOST_NAME
-                    if Server.manager == None or Server.isRunning == False:
-                        Server.manager = threading.Thread(target=self.managerProcess)
-                        Server.pipe_parent,Server.pipe_child = multiprocessing.Pipe()
-                        #print("pipe is ready \n\n\n",Server.pipe_parent)
-                        Server.manager.start()
-                        print("[+] Room Manager is now started")
-                    #print(Server.pipe_parent)
-                    process = multiprocessing.Process(target=room.main, args=(roomId,HOST_NAME,freePort,Server.pipe_child))
-                    process.start()
-                    Server.portList.pop(0)
-                    Server.rooms[roomId] = {"host":HOST_NAME,"port":freePort,"process":process}
+                dataDict = self.create_room(websocket)
 
             elif int(data['type']) == 2:
                 print(Server.rooms)
-                if int(data['roomId']) in Server.rooms:
-                    print("[+] Room available for ",websocket ,": ",data['roomId'])
-                    #Server.rooms[data['roomId']].append(websocket)
-                    dataDict["status"] = 200
-                    dataDict["type"] = 1
-                    dataDict["message"] = "Room Available"
-                    dataDict["roomId"] = int(data['roomId'])
-                    dataDict["host"] = Server.rooms[int(data['roomId'])]['host']
-                    dataDict["port"] = Server.rooms[int(data['roomId'])]['port']
-                else:
-                    print("[+] Room not available for ",websocket ,": ",data['roomId'])
-                    dataDict["status"] = 400
-                    dataDict["type"] = -1
-                    dataDict["message"] = "Room does not exist"
+                dataDict = self.join_room(websocket,data)
+
             await self.sendDict(websocket, dataDict)
             print("[+] Message sent to ",websocket,": ",dataDict)
             return

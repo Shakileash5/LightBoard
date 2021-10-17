@@ -12,6 +12,7 @@ import signal
 # type - 5 request canvas
 # type - 6 canvas recieve
 # type - 7 canvas update
+# type - 8 member removed
 
 # create a echo server class
 class Room:
@@ -35,7 +36,7 @@ class Room:
     async def unregister(self, websocket):
         Room.Clients.remove(websocket)
         print(f"{websocket} has left the chat")
-        await self.send_all({"status":"200","type": "4", "message": f"{websocket} has left the chat","noOfClients":len(Room.Clients)})
+        await self.send_all({"status":"200","type": "8", "message": f"{websocket} has left the chat","noOfClients":len(Room.Clients)})
         if len(Room.Clients) == 0:
             print("[+] No clients in the room")
             self.pipe.send((self.port,self.roomId))
