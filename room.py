@@ -90,17 +90,16 @@ class Room:
                 await self.request_canvas(websocket)
             elif data["type"] == "6":
                 await self.send_canvasData(websocket,data)
-
-            #print("[+] Message - one",data,websocket)
-            #await self.sendDict(websocket,data)
+            Room.LoggerObj.debug(f"[+] {websocket} sent {data}",None,self.roomId)
+        return
 
     async def handle_request(self, websocket, path):
         await self.register(websocket)
         try:
             await self.distribute(websocket)
-            print("[+] Waiting for messages")
+            #Room.LoggerObj.DEBUG("[+] Waiting for messages")
         except Exception as e:
-            print("[-] Error",e)
+            Room.LoggerObj.error("[-] Error",e,self.roomId)
         finally:
             await self.unregister(websocket)
 

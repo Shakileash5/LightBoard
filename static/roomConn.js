@@ -136,7 +136,7 @@ function onOpen(){
 function onmessage(data){
 	
 	data = JSON.parse(data.data); // parse the data
-
+	console.log(data);
 	if(data.type == "3"){ // if the data is canvas data
 		if(data.action == "draw_start"){
 			startDraw(data.x,data.y);
@@ -226,8 +226,8 @@ function sendMsg(x,y,brushSize,action){
  * @return {string} - The canvas data as a base64 encoded string. 
  */
 function getCanvasData(){
-	var canvas = document.getElementById("myCanvas");
-	var data = canvas.toDataURL();
+	let canvas = document.getElementById("canvas");
+	let data = canvas.toDataURL();
 	return data;
 
 }
