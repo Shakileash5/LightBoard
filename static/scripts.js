@@ -155,39 +155,43 @@ window.onload = function() {
 
 
 	/**
-	 *
-	 *
+	 * Handler function when user moves the mouse and sends the data to server
 	 * @param {*} evt
 	 */
 	function drawMove(evt) {
+		if (started && !eraseFlag) { // Check if drawing is started and erase flag is not set
+			ctx.lineTo(
+				evt.offsetX - 0,
+				evt.offsetY - 0
+			);
 
-			if (started && !eraseFlag) {
-				ctx.lineTo(
-					evt.offsetX - 0,
-					 evt.offsetY - 0
-				);
-				
-				ctx.strokeStyle = "#000";
-				ctx.lineWidth = brushSize;
-				ctx.stroke();
-				//console.log("Drawing",evt.pageX,evt.pageY);
-				sendMsgAsync(evt.offsetX,evt.offsetY,brushSize,"draw");
-			}
-			else if(started && eraseFlag){
-				ctx.clearRect(evt.offsetX - 0, evt.offsetY - 0, brushSize*2, brushSize*2);
-				sendMsgAsync(evt.offsetX,evt.offsetY,brushSize,"erase");
-			}
-
+			ctx.strokeStyle = "#000";
+			ctx.lineWidth = brushSize;
+			ctx.stroke();
+			// send the drawing data to room.
+			sendMsgAsync(evt.offsetX,evt.offsetY,brushSize,"draw");
 		}
+		else if(started && eraseFlag){ // Check if drawing is started and erase flag is set
+			ctx.clearRect(evt.offsetX - 0, evt.offsetY - 0, brushSize*2, brushSize*2);
+			// send the drawing data to room.
+			sendMsgAsync(evt.offsetX,evt.offsetY,brushSize,"erase");
+		}
+
+	}
 	
+
+	/**
+	 * Handler function when user stops drawing and sends the data to server
+	 * @param {*} evt
+	 */
 	function endDraw(evt) {
 		started = false;
 		if(!eraseFlag){
 			sendMsgAsync(evt.offsetX,evt.offsetY,brushSize,"draw_end");
 		}
-		//sendMsg(evt.offsetX,evt.offsetY,"draw_end");
 	}
-	// Touch Events
+
+	// Mouse Events
 	canvas.addEventListener('mousedown', startDraw, false);
 	canvas.addEventListener('mouseup', endDraw, false);
 	canvas.addEventListener('mousemove', drawMove, false);
