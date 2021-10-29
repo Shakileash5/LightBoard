@@ -14,7 +14,7 @@ class bcolors:
 
 
 class Logger:
-    DEBUG = True #False
+    DEBUG = False
     PADDING = 9
     _INSTANCE = None
 

@@ -1,4 +1,4 @@
-var myCanvas = document.getElementById("myCanvas");
+var myCanvas = document.getElementById("canvas");
 var ctx = myCanvas.getContext("2d");
 var started = false;
     // Fill Window Width and Height

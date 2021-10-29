@@ -11,11 +11,29 @@ from logger import Logger
 
 
 async def testConnection(websocket, path):
+    """
+    Util function to test connection with the websocket
+
+    :param websocket: websocket object
+    :param path: path
+
+    :return: None
+    """
     async for message in websocket:
         await websocket.send(message)
 
 def getFirstFreePorts(host, port_start, port_end,rooms):
-    print(" ----- Init port scanning ------ ")
+    """
+    Util function to get first free port
+
+    :param host: host name
+    :param port_start: port start
+    :param port_end: port end
+    :param rooms: rooms
+
+    :return: free port
+    """
+    #print(" ----- Init port scanning ------ ")
     # scan for available ports
     while port_start <= port_end:
         if port_start not in rooms.keys():
@@ -38,6 +56,17 @@ def getFirstFreePorts(host, port_start, port_end,rooms):
     return -1
 
 def roomCreationUtil(rooms,hostName,port_start,port_end,serverPorts):
+    """
+    Util function to create an room id and get free port for the room .
+
+    :param rooms: rooms
+    :param hostName: host name
+    :param port_start: port start
+    :param port_end: port end
+    :param serverPorts: server ports
+
+    :return: room id and  free port
+    """
     roomId = random.randint(1000,9999)
     dataDict = {}
     loggerObj = Logger.getInstance()
@@ -51,6 +80,13 @@ def roomCreationUtil(rooms,hostName,port_start,port_end,serverPorts):
     return freePort,roomId
 
 def exception_handler(func):
+    """
+    Decorator to handle exceptions
+
+    :param func: function
+
+    :return: function
+    """
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
