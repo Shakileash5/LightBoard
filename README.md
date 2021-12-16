@@ -4,7 +4,7 @@
 
 # Light Board
 
-An interactive whiteboard to share, learn and engage in active new way. Share ideas in brainstorms, draw them to your friends and family.
+An interactive whiteboard to share, learn and engage in active new way. It is a collaborative whiteboard platform that enables people to share and draw their ideas and thoughts.
 Access to the board is free and open to everyone.
 
 ## Installation
