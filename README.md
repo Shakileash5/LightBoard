@@ -36,6 +36,17 @@ Make sure you have knowledge about python and html.
 - Share
 - Erase
 
+## Screenshots
+- Create or Join Room
+![create or join room](https://github.com/Shakileash5/LightBoard/blob/main/static/img1.PNG?raw=true)
+
+- Join Room
+![join room](https://github.com/Shakileash5/LightBoard/blob/main/static/joinRoom.PNG?raw=true)
+
+- Draw or Erase
+![draw or erase](https://github.com/Shakileash5/LightBoard/blob/main/static/activity.PNG?raw=true)
+
+
 # Contribution
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
